@@ -35,11 +35,11 @@
 
 #include <driver_init.h>
 #include <compiler.h>
-//
-//ISR(TCA0_CMP0_vect)
-//{
-	///* Insert your TCA Compare 0 Interrupt handling code here */
-//
-	///* The interrupt flag has to be cleared manually */
-	//TCA0.SINGLE.INTFLAGS = TCA_SINGLE_CMP0_bm;
-//}
+
+ISR(TCA0_CMP0_vect)
+{
+	/* Insert your TCA Compare 0 Interrupt handling code here */
+
+	/* The interrupt flag has to be cleared manually */
+	TCA0.SINGLE.INTFLAGS = TCA_SINGLE_CMP0_bm;
+}
