@@ -10,35 +10,31 @@
 
 void TCB0Init(void)
 {
-	/* Configure LED0 pin as output */
 	TCB0.CCMP = F_CPU/2/32000; //32khz
-	//
-	TCB0.INTCTRL = TCB_OVF_bm;
 	TCB0.CTRLA |= TCB_ENABLE_bm;
 	TCB0.CTRLA |= TCB_CLKSEL_DIV2_gc;
 	TCB0.CTRLB = TCB_CNTMODE_INT_gc;
+	TCB0.INTCTRL = TCB_CAPT_bm;
 
 }
 void TAC0Init(void)
 {
 	/* Configure LED0 pin as output */
 	PORTC.DIRSET = PIN3_bm;
-	/* set waveform output on PORT A */
-	PORTMUX.TCAROUTEA = PORTMUX_TCA0_PORTA_gc;
-	
-	TCA0.SINGLE.CTRLB = TCA_SINGLE_CMP0EN_bm            /* enable compare channel 0 */
-	| TCA_SINGLE_WGMODE_DSBOTTOM_gc;    /* set dual-slope PWM mode */
-	
-	/* disable event counting */
-	TCA0.SINGLE.EVCTRL &= ~(TCA_SINGLE_CNTAEI_bm);
-	
-	/* set PWM frequency and duty cycle (50%) */
-	TCA0.SINGLE.PERBUF  = 0xffff;
-	TCA0.SINGLE.CMP0BUF = 0x1f;
-	
-	TCA0.SINGLE.CTRLA = TCA_SINGLE_CLKSEL_DIV4_gc        /* set clock source (sys_clk/4) */
-	| TCA_SINGLE_ENABLE_bm;           /* start timer */
-
+    /* set waveform output on PORT A */
+    PORTMUX.TCAROUTEA = PORTMUX_TCA0_PORTC_gc;
+    
+    /* enable split mode */
+    TCA0.SPLIT.CTRLD = TCA_SPLIT_SPLITM_bm;
+    
+    TCA0.SPLIT.CTRLB = TCA_SPLIT_HCMP0EN_bm;        /* enable compare channel 0 for the higher byte */
+    
+    /* set the PWM frequencies and duty cycles */
+    TCA0.SPLIT.HPER = 0xff;
+    TCA0.SPLIT.HCMP0 = 0x00;
+    
+    TCA0.SPLIT.CTRLA = TCA_SPLIT_CLKSEL_DIV2_gc    /* set clock source (sys_clk/16) */
+    | TCA_SPLIT_ENABLE_bm;         /* start timer */
 }
 
 
@@ -105,14 +101,16 @@ void DACInit(void)
 	DAC0.CTRLA = DAC_ENABLE_bm          /* Enable DAC */
 	| DAC_OUTEN_bm           /* Enable output buffer */
 	| DAC_RUNSTDBY_bm;       /* Enable Run in Standby mode */
+	DACSetValue(0);
 }
 
 void DACSetValue(uint16_t value)
 {
 	/* Store the two LSbs in DAC0.DATAL */
-	DAC0.DATAL = (value & 0x03) << 6;
+	//DAC0_DATAL = (value & 0x03) << 6;
 	/* Store the eight MSbs in DAC0.DATAH */
-	DAC0.DATAH = value >> 2;
+	//DAC0_DATAH = value >> 2;
+	DAC0_DATA = value<<6;
 }
 
 /* This function initializes the ADC module */

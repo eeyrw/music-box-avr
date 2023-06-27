@@ -28,8 +28,8 @@
 
 
 		ldd t0l,Y+pIncrement_frac
-		ldd t2h,Y+pWavetablePos_frac  ;Load pWavetablePos_frac to t2h
-		add t0l,t2h
+		ldd t0h,Y+pWavetablePos_frac
+		add t0l,t0h
 		std Y+pWavetablePos_frac,t0l
 
 		ldd t0l,Y+pIncrement_int
@@ -61,16 +61,12 @@
 		adc t2l,zero
 		out RAMPZ,t2l
 	#ifdef USE_LINEAR_INTEROP
-		ldi t0l,0 ;Assuming overflow so setting t0l = 0
-		elpm t2l,Z+
+		elpm t0l,Z+
 		elpm t0h,Z
-		sub t0h,t2l
-		
-		brvs overflow
-		mov t0l,t2l
-		mulsu t0l,t2h ;r1:r0=sampleDiff*pWavetablePos_frac
+		sub t0h,t0l ;TO BE FIXED: Overflow will happen if t0h=127,t0l=-128
+		ldd t2l,Y+pWavetablePos_frac
+		mulsu t0h,t2l ;r1:r0=sampleDiff*pWavetablePos_frac
 		add t0l,r1
-	overflow:
 	#else
 		elpm t0l,Z
 	#endif
@@ -106,47 +102,50 @@
 
 	mov mixOutl,mixOuth
 	mov mixOuth,mixOute
-	;clr mixOuth ;(r1:r0)/255
-	;sbrc mixOutl,7 ;skip if bit 7(sign bit of signed 16) of r1 is 0
-	;com mixOuth ;~r0=0xFF
 
 	#ifdef RUN_TEST
 	sts synthForAsm+pMixOut,mixOutl
 	sts synthForAsm+pMixOut+1,mixOuth
 	#endif
 
-	asr mixOuth
-	ror mixOutl
-
-	ldi	t0l, lo8(253)			;Clip it between -255 to 253
-	ldi t0h, hi8(253)
+	ldi	t0l, lo8(511)			;Clip it between -255 to 253
+	ldi t0h, hi8(511)
 	cp mixOutl,t0l
 	cpc mixOuth,t0h
 	brlt	higherBoundSatisfied			;
 	movw	mixOutl, t0l			;
 	higherBoundSatisfied:
-	ldi	t0l, lo8(-255)			;
-	ldi t0h, hi8(-255)
+	ldi	t0l, lo8(-512)			;
+	ldi t0h, hi8(-512)
 	cp mixOutl,t0l
 	cpc mixOuth,t0h	;
 	brge	lowerBoundSatisfied			;
 	movw	mixOutl, t0l			;/
 	lowerBoundSatisfied:
-	asr mixOuth ; Set it to PWM modulator ： 把16位的T2带符号位右移一位，除以2，最低位移到Carrier 
-	ror mixOutl			
-	ror	mixOuth				; 把T2H的高位右移，Carrier进到T2H的第七位
-	mov	t0l, mixOutl			; 复制T2L到EL
-	subi t0l, 0x80	; EL=EL-0x80
-	mov	t0h, t0l			; 
-	com	t0h				; EH取反
-	sbrc mixOuth, 7		; 如果T2H的第七位是0就跳过下面一行
-	inc	t0l				; EL++
+
+	ldi	t0l, lo8(512)
+	ldi t0h, hi8(512)
+
+	add mixOutl,t0l
+	adc mixOuth,t0h
 
 
-	sts DAC0_DATAL,t0l
-	sts DAC0_DATAH,t0h
-	;sts OCR1AL,t0l
-	;sts OCR1BL,t0h
+	sts TCA0_SPLIT_HCMP0,mixOuth
+
+	; mixOut = mixOut<<6;
+	clr	t0l
+	lsr	mixOuth
+	ror	mixOutl
+	ror	t0l
+	lsr	mixOuth
+	ror	mixOutl
+	ror	t0l
+	mov	mixOuth, mixOutl
+	mov	mixOutl, t0l
+
+	
+	sts DAC0_DATAL,mixOutl
+	sts DAC0_DATAH,mixOuth
 
 	pop mixOute	
 	pop mixOuth

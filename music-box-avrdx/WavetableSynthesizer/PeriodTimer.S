@@ -13,14 +13,22 @@ PeriodTimerHandler:
 	push r19
 	push r20
 	push r21	
+	push r22
+	push r23
 	push r30
 	push r31
-	ldi	r18, TCB_OVF_bp	; Clear TCB0 interrupt bit
+	ldi	r18, TCB_CAPT_bm	; Clear TCB0 interrupt bit
 	sts	TCB0_INTFLAGS, r18	;
+	in r18, RAMPZ
+	push r18
     #include "Synth.inc"
     #include "UpdateTick.inc"
+	pop r18
+	out RAMPZ,r18
 	pop r31
 	pop r30
+	pop r23
+	pop r22
 	pop r21	
 	pop r20
 	pop r19

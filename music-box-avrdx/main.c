@@ -13,6 +13,7 @@
 extern const unsigned char Score[];
 Player mainPlayer;
 
+
 int main(void)
 {
 	ClockInit();
