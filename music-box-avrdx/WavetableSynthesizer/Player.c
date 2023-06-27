@@ -33,7 +33,8 @@ void PlayerProcess(Player *player)
                     NoteOnAsm(temp);
                 }
             } while ((temp & 0x80) == 0);
-            PlayUpdateNextScoreTick(player);
+			if (player->status == STATUS_PLAYING)
+				PlayUpdateNextScoreTick(player);
         }
     }
 }
