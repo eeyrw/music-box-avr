@@ -9,7 +9,7 @@
 
 #ifndef __ASSEMBLER__
 #include <stdint.h>
-extern const int8_t WaveTable[WAVETABLE_LEN];
+extern const int8_t __attribute__((section (".far_flash"))) WaveTable[WAVETABLE_LEN];
 extern const uint16_t WaveTable_Increment[];
 #else
 .extern	WaveTable

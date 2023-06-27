@@ -3,7 +3,8 @@
 #include <avr/pgmspace.h>
 // Sample's base frequency: 523.629906 Hz
 // Sample's sample rate: 32000 Hz
-const int8_t WaveTable[WAVETABLE_LEN] PROGMEM ={
+	
+const int8_t __attribute__((section (".far_flash"))) WaveTable[WAVETABLE_LEN]={
 // Attack Samples:
      0,     0,     0,     0,     0,     0,     0,     1,     0,     0,
      2,    -1,     1,     3,    -1,     5,     3,     0,     8,     0,

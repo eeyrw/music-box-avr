@@ -28,8 +28,8 @@
 
 
 		ldd t0l,Y+pIncrement_frac
-		ldd t0h,Y+pWavetablePos_frac 
-		add t0l,t0h
+		ldd t2h,Y+pWavetablePos_frac  ;Load pWavetablePos_frac to t2h
+		add t0l,t2h
 		std Y+pWavetablePos_frac,t0l
 
 		ldd t0l,Y+pIncrement_int
@@ -51,11 +51,30 @@
 
 
 
-		ldi t0l,lo8(WaveTable)
+		ldi t2l,hh8(WaveTable)
 		ldi t0h,hi8(WaveTable)
+		ldi t0l,lo8(WaveTable)
+		
+		
 		add zl,t0l
 		adc zh,t0h
-		lpm t0l,Z
+		adc t2l,zero
+		out RAMPZ,t2l
+	#ifdef USE_LINEAR_INTEROP
+		ldi t0l,0 ;Assuming overflow so setting t0l = 0
+		elpm t2l,Z+
+		elpm t0h,Z
+		sub t0h,t2l
+		
+		brvs overflow
+		mov t0l,t2l
+		mulsu t0l,t2h ;r1:r0=sampleDiff*pWavetablePos_frac
+		add t0l,r1
+	overflow:
+	#else
+		elpm t0l,Z
+	#endif
+
 	#ifdef RUN_TEST
 		std Y+pSampleVal,t0l
 	#endif
@@ -122,6 +141,8 @@
 	com	t0h				; EH取反
 	sbrc mixOuth, 7		; 如果T2H的第七位是0就跳过下面一行
 	inc	t0l				; EL++
+
+
 	sts DAC0_DATAL,t0l
 	sts DAC0_DATAH,t0h
 	;sts OCR1AL,t0l
