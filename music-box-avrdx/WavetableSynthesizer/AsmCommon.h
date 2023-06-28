@@ -14,11 +14,15 @@
 #define t1h r21
 #define t2l r22
 #define t2h r23
+#define t3l r24
+#define t3h r25
+
 #define mixOutl r14
 #define mixOuth r15
 #define mixOute t2h
 #define loopIndex r16
 
+// Warning: t2,t3 reg is overlap with arg
 #define arg0l r24
 #define arg0h r25
 #define arg1l r22
