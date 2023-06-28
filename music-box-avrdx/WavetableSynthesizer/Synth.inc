@@ -20,7 +20,7 @@
 	loopSynth:
 		cpi loopIndex,POLY_NUM
 		breq loopSynth_end
-		ldd t1h,Y+pEnvelopeLevel ; Load evnvlopelevel to t1h	
+		ldd t1h,Y+pEnvelopeLevel ; Load evnvlopelevel to t1h for later use	
 		cp t1h,zero
 		breq loopSynthContinue	
 		ldd zl,Y+pWavetablePos_int_l ; Get a sample by pWavetablePos_int and save to t0l
@@ -28,8 +28,8 @@
 
 
 		ldd t0l,Y+pIncrement_frac
-		ldd t0h,Y+pWavetablePos_frac
-		add t0l,t0h
+		ldd r0,Y+pWavetablePos_frac ; Load pWavetablePos_frac to r0 for later use	
+		add t0l,r0
 		std Y+pWavetablePos_frac,t0l
 
 		ldd t0l,Y+pIncrement_int
@@ -64,7 +64,7 @@
 		elpm t0l,Z+
 		elpm t0h,Z
 		sub t0h,t0l ;TO BE FIXED: Overflow will happen if t0h=127,t0l=-128
-		ldd t2l,Y+pWavetablePos_frac
+		mov t2l,r0
 		mulsu t0h,t2l ;r1:r0=sampleDiff*pWavetablePos_frac
 		add t0l,r1
 	#else
@@ -108,7 +108,7 @@
 	sts synthForAsm+pMixOut+1,mixOuth
 	#endif
 
-	ldi	t0l, lo8(511)			;Clip it between -255 to 253
+	ldi	t0l, lo8(511)			;Clip it between -512 to 511
 	ldi t0h, hi8(511)
 	cp mixOutl,t0l
 	cpc mixOuth,t0h
