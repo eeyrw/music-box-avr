@@ -66,6 +66,11 @@
 		sub t0h,t0l ;TO BE FIXED: Overflow will happen if t0h=127,t0l=-128
 		mov t2l,r0
 		mulsu t0h,t2l ;r1:r0=sampleDiff*pWavetablePos_frac
+
+		;r1 = Round(r1.r0)
+		sbrc r0,7 ;skip if bit 7 of r0 is 0
+		inc r1
+
 		add t0l,r1
 	#else
 		elpm t0l,Z
@@ -75,9 +80,6 @@
 		std Y+pSampleVal,t0l
 	#endif
 		mulsu t0l,t1h ;r1:r0=sample*evnvlopelevel
-		; clr r0 ;(r1:r0)/255
-		; sbrc r1,7 ;skip if bit 7(sign bit of signed 16) of r1 is 0
-		; com r0 ;~r0=0xFF
 	#ifdef RUN_TEST	
 		std Y+pVal,r1
 		std Y+(pVal+1),r0
@@ -100,8 +102,15 @@
 
 	loopSynth_end:
 
+	; mixOutHL = Round(mixOutEH.L)
+	clr t0l
+	mov r0,mixOutl
+	sbrc r0,7 ;skip if bit 7 of mixOutl is 0
+	inc t0l
 	mov mixOutl,mixOuth
 	mov mixOuth,mixOute
+	add mixOutl,t0l
+	adc mixOuth,zero
 
 	#ifdef RUN_TEST
 	sts synthForAsm+pMixOut,mixOutl
