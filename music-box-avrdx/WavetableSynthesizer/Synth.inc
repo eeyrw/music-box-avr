@@ -70,9 +70,9 @@
 		;https://sestevenson.wordpress.com/2009/08/19/rounding-in-fixed-point-number-conversions/
 		;r1 = Round(r1.r0)
 		ldi t1l,0x80
-		ldi t1h,0x00
 		add r0,t1l
-		adc r1,t1h
+		ldi t1l,0x00
+		adc r1,t1l
 
 		add t0l,r1
 	#else
