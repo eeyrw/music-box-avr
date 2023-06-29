@@ -67,9 +67,12 @@
 		mov t2l,r0
 		mulsu t0h,t2l ;r1:r0=sampleDiff*pWavetablePos_frac
 
+		;https://sestevenson.wordpress.com/2009/08/19/rounding-in-fixed-point-number-conversions/
 		;r1 = Round(r1.r0)
-		sbrc r0,7 ;skip if bit 7 of r0 is 0
-		inc r1
+		ldi t1l,0x80
+		ldi t1h,0x00
+		add r0,t1l
+		adc r1,t1h
 
 		add t0l,r1
 	#else
@@ -103,14 +106,14 @@
 	loopSynth_end:
 
 	; mixOutHL = Round(mixOutEH.L)
-	clr t0l
-	mov r0,mixOutl
-	sbrc r0,7 ;skip if bit 7 of mixOutl is 0
-	inc t0l
-	mov mixOutl,mixOuth
-	mov mixOuth,mixOute
+	ldi t0l,0x80
 	add mixOutl,t0l
 	adc mixOuth,zero
+	adc mixOute,zero
+
+	mov mixOutl,mixOuth
+	mov mixOuth,mixOute
+
 
 	#ifdef RUN_TEST
 	sts synthForAsm+pMixOut,mixOutl
