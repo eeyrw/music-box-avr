@@ -85,7 +85,14 @@ ldi yh,hi8(synthForAsm)
 
 ldi t0l,SoundUnitSize
 cli
-ldd t0h,Y+pLastSoundUnit
+
+;t0h=Y+pLastSoundUnit
+movw xl,ylldi t2l,lo8(pLastSoundUnit)add yl,t2l
+ldi t2h,hi8(pLastSoundUnit)
+adc yh,t2h
+ld t0h,Y
+movw yl,xl
+
 mul t0l,t0h
 add yl,r0
 adc yh,r1
@@ -116,7 +123,11 @@ clr t0h
 lastSoundUnitUpdateEndNotEq:
 ldi yl,lo8(synthForAsm)
 ldi yh,hi8(synthForAsm)
-std Y+pLastSoundUnit,t0h
+
+;Y+pLastSoundUnit=t0hldi t2l,lo8(pLastSoundUnit)add yl,t2l
+ldi t2h,hi8(pLastSoundUnit)
+adc yh,t2h
+st Y,t0h
 
 pop yh
 pop yl

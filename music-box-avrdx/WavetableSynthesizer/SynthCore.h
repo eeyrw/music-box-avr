@@ -1,7 +1,7 @@
 #ifndef __SYNTH_CORE_H__
 #define __SYNTH_CORE_H__
 
-#define POLY_NUM 6
+#define POLY_NUM 8
 #define ENVELOP_LEN 256
 #define DECAY_TIME_FACTOR 100
 
