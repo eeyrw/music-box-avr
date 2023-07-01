@@ -115,10 +115,10 @@
 	mov mixOuth,mixOute
 
 
-	#ifdef RUN_TEST
+	;#ifdef RUN_TEST
 	sts synthForAsm+pMixOut,mixOutl
 	sts synthForAsm+pMixOut+1,mixOuth
-	#endif
+	;#endif
 
 	ldi	t0l, lo8(511)			;Clip it between -512 to 511
 	ldi t0h, hi8(511)
@@ -141,8 +141,6 @@
 	add mixOutl,t0l
 	adc mixOuth,t0h
 
-
-	sts TCA0_SPLIT_HCMP0,mixOuth
 
 	; mixOut = mixOut<<6;
 	clr	t0l

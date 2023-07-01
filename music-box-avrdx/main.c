@@ -13,6 +13,14 @@
 extern const unsigned char Score[];
 Player mainPlayer;
 
+void VisualizeSound(void)
+{
+	int16_t t;
+	t = synthForAsm.mixOut;
+	if (t < 0)
+	t = -t;
+	TCA0.SPLIT.HCMP0 = t & 0xff;
+}
 
 int main(void)
 {
@@ -32,5 +40,6 @@ int main(void)
 	while(1)
 	{
 		PlayerProcess(&mainPlayer);
+		VisualizeSound();
 	}
 }
