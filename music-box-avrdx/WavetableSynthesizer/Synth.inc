@@ -69,10 +69,10 @@
 
 		;https://sestevenson.wordpress.com/2009/08/19/rounding-in-fixed-point-number-conversions/
 		;r1 = Round(r1.r0)
-		ldi t1l,0x80
-		add r0,t1l
-		ldi t1l,0x00
-		adc r1,t1l
+		;ldi t1l,0x80
+		;add r0,t1l
+		;ldi t1l,0x00
+		;adc r1,t1l
 
 		add t0l,r1
 	#else
@@ -106,10 +106,10 @@
 	loopSynth_end:
 
 	; mixOutHL = Round(mixOutEH.L)
-	ldi t0l,0x80
-	add mixOutl,t0l
-	adc mixOuth,zero
-	adc mixOute,zero
+	;ldi t0l,0x80
+	;add mixOutl,t0l
+	;adc mixOuth,zero
+	;adc mixOute,zero
 
 	mov mixOutl,mixOuth
 	mov mixOuth,mixOute
