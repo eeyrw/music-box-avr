@@ -50,19 +50,28 @@
 		std Y+pWavetablePos_int_h,t0h
 
 
-
+	#ifdef ADDRESS_LARGE_THAN_64K
 		ldi t2l,hh8(WaveTable)
+	#endif
 		ldi t0h,hi8(WaveTable)
 		ldi t0l,lo8(WaveTable)
 		
 		
 		add zl,t0l
 		adc zh,t0h
+	#ifdef ADDRESS_LARGE_THAN_64K
 		adc t2l,zero
 		out RAMPZ,t2l
+	#endif
+
 	#ifdef USE_LINEAR_INTEROP
+	#ifdef ADDRESS_LARGE_THAN_64K
 		elpm t0l,Z+
 		elpm t0h,Z
+	#else
+		lpm t0l,Z+
+		lpm t0h,Z
+	#endif
 		sub t0h,t0l ;TO BE FIXED: Overflow will happen if t0h=127,t0l=-128
 		mov t2l,r0
 		mulsu t0h,t2l ;r1:r0=sampleDiff*pWavetablePos_frac
@@ -76,7 +85,11 @@
 
 		add t0l,r1
 	#else
+	#ifdef ADDRESS_LARGE_THAN_64K
 		elpm t0l,Z
+	#else
+		lpm t0l,Z
+	#endif
 	#endif
 
 	#ifdef RUN_TEST
@@ -120,42 +133,7 @@
 	sts synthForAsm+pMixOut+1,mixOuth
 	;#endif
 
-	ldi	t0l, lo8(511)			;Clip it between -512 to 511
-	ldi t0h, hi8(511)
-	cp mixOutl,t0l
-	cpc mixOuth,t0h
-	brlt	higherBoundSatisfied			;
-	movw	mixOutl, t0l			;
-	higherBoundSatisfied:
-	ldi	t0l, lo8(-512)			;
-	ldi t0h, hi8(-512)
-	cp mixOutl,t0l
-	cpc mixOuth,t0h	;
-	brge	lowerBoundSatisfied			;
-	movw	mixOutl, t0l			;/
-	lowerBoundSatisfied:
-
-	ldi	t0l, lo8(512)
-	ldi t0h, hi8(512)
-
-	add mixOutl,t0l
-	adc mixOuth,t0h
-
-
-	; mixOut = mixOut<<6;
-	clr	t0l
-	lsr	mixOuth
-	ror	mixOutl
-	ror	t0l
-	lsr	mixOuth
-	ror	mixOutl
-	ror	t0l
-	mov	mixOuth, mixOutl
-	mov	mixOutl, t0l
-
-	
-	sts DAC0_DATAL,mixOutl
-	sts DAC0_DATAH,mixOuth
+    #include "SynthOutput.inc"
 
 	pop mixOute	
 	pop mixOuth

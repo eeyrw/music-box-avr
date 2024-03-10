@@ -28,6 +28,4 @@
 #define arg1l r22
 #define arg1h r23
 
-#define USE_LINEAR_INTEROP
-
 #endif

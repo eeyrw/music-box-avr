@@ -1,11 +1,8 @@
 #ifndef __SYNTH_CORE_H__
 #define __SYNTH_CORE_H__
 
-#define POLY_NUM 8
-#define ENVELOP_LEN 256
-#define DECAY_TIME_FACTOR 100
+#include "SynthConfig.h"
 
-#define SoundUnitSize 10
 
 #define pIncrement_int 1
 #define pIncrement_frac 0
@@ -25,7 +22,7 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+	#endif
 
 typedef struct _SoundUnit
 {

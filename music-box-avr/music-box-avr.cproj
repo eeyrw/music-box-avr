@@ -4,17 +4,17 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>7.0</ProjectVersion>
     <ToolchainName>com.Atmel.AVRGCC8.C</ToolchainName>
-    <ProjectGuid>dce6c7e3-ee26-4d79-826b-08594b9ad897</ProjectGuid>
-    <avrdevice>AVR128DA28</avrdevice>
+    <ProjectGuid>{9113a85c-fadb-4056-9e42-bea3227bce4d}</ProjectGuid>
+    <avrdevice>ATmega328P</avrdevice>
     <avrdeviceseries>none</avrdeviceseries>
     <OutputType>Executable</OutputType>
     <Language>C</Language>
     <OutputFileName>$(MSBuildProjectName)</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
-    <AssemblyName>music-box-avrdx</AssemblyName>
-    <Name>music-box-avrdx</Name>
-    <RootNamespace>music-box-avrdx</RootNamespace>
+    <AssemblyName>music-box-avr</AssemblyName>
+    <Name>music-box-avr</Name>
+    <RootNamespace>music-box-avr</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
@@ -40,53 +40,11 @@
         </dependencies>
       </framework-data>
     </AsfFrameworkConfig>
-    <avrtool>custom</avrtool>
-    <avrtoolserialnumber>
-    </avrtoolserialnumber>
-    <avrdeviceexpectedsignature>0x1E970A</avrdeviceexpectedsignature>
-    <avrtoolinterface>
-    </avrtoolinterface>
-    <com_atmel_avrdbg_tool_pickit4>
-      <ToolOptions>
-        <InterfaceProperties>
-          <UpdiClock>750000</UpdiClock>
-        </InterfaceProperties>
-        <InterfaceName>UPDI</InterfaceName>
-      </ToolOptions>
-      <ToolType>com.atmel.avrdbg.tool.pickit4</ToolType>
-      <ToolNumber>BUR185073054</ToolNumber>
-      <ToolName>MPLAB® PICkit 4</ToolName>
-    </com_atmel_avrdbg_tool_pickit4>
-    <avrtoolinterfaceclock>500000</avrtoolinterfaceclock>
-    <com_atmel_avrdbg_tool_jtagice3plus>
-      <ToolOptions>
-        <InterfaceProperties>
-          <UpdiClock>500000</UpdiClock>
-        </InterfaceProperties>
-        <InterfaceName>
-        </InterfaceName>
-      </ToolOptions>
-      <ToolType>com.atmel.avrdbg.tool.jtagice3plus</ToolType>
-      <ToolNumber>J30200006282</ToolNumber>
-      <ToolName>JTAGICE3</ToolName>
-    </com_atmel_avrdbg_tool_jtagice3plus>
-    <custom>
-      <ToolOptions xmlns="">
-        <InterfaceProperties>
-        </InterfaceProperties>
-        <InterfaceName>
-        </InterfaceName>
-      </ToolOptions>
-      <ToolType xmlns="">custom</ToolType>
-      <ToolNumber xmlns="">
-      </ToolNumber>
-      <ToolName xmlns="">Custom Programming Tool</ToolName>
-    </custom>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
       <AvrGcc>
-        <avrgcc.common.Device>-mmcu=avr128da28 -B "%24(PackRepoDir)\Atmel\AVR-Dx_DFP\2.4.286\gcc\dev\avr128da28"</avrgcc.common.Device>
+        <avrgcc.common.Device>-mmcu=atmega328p -B "%24(PackRepoDir)\Atmel\ATmega_DFP\2.1.506\gcc\dev\atmega328p"</avrgcc.common.Device>
         <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
         <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
         <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
@@ -99,13 +57,13 @@
             <Value>NDEBUG</Value>
           </ListValues>
         </avrgcc.compiler.symbols.DefSymbols>
-        <avrgcc.compiler.directories.IncludePaths>
-          <ListValues>
-      <Value>../../WavetableSynthesizer</Value>
-      <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\2.4.286\include\</Value>
-      <Value>..</Value>
-          </ListValues>
-        </avrgcc.compiler.directories.IncludePaths>
+		  <avrgcc.compiler.directories.IncludePaths>
+			<ListValues>
+			  <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\2.1.506\include\</Value>
+			  <Value>../../WavetableSynthesizer</Value>
+			  <Value>..</Value>
+			</ListValues>
+		  </avrgcc.compiler.directories.IncludePaths>
         <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
         <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
         <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
@@ -117,9 +75,9 @@
         </avrgcc.linker.libraries.Libraries>
         <avrgcc.assembler.general.IncludePaths>
           <ListValues>
-      <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\2.4.286\include\</Value>
-      <Value>..</Value>
-      <Value>../../WavetableSynthesizer</Value>
+			  <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\2.1.506\include\</Value>
+			  <Value>..</Value>
+			  <Value>../../WavetableSynthesizer</Value>
           </ListValues>
         </avrgcc.assembler.general.IncludePaths>
       </AvrGcc>
@@ -128,7 +86,7 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
       <AvrGcc>
-  <avrgcc.common.Device>-mmcu=avr128da28 -B "%24(PackRepoDir)\Atmel\AVR-Dx_DFP\2.4.286\gcc\dev\avr128da28"</avrgcc.common.Device>
+  <avrgcc.common.Device>-mmcu=atmega328p -B "%24(PackRepoDir)\Atmel\ATmega_DFP\2.1.506\gcc\dev\atmega328p"</avrgcc.common.Device>
   <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
   <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
   <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
@@ -143,8 +101,8 @@
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
+      <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\2.1.506\include\</Value>
       <Value>../../WavetableSynthesizer</Value>
-      <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\2.4.286\include\</Value>
       <Value>..</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
@@ -158,14 +116,9 @@
       <Value>libm</Value>
     </ListValues>
   </avrgcc.linker.libraries.Libraries>
-  <avrgcc.linker.memorysettings.Flash>
-    <ListValues>
-      <Value>.far_flash=0x8000</Value>
-    </ListValues>
-  </avrgcc.linker.memorysettings.Flash>
   <avrgcc.assembler.general.IncludePaths>
     <ListValues>
-      <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\2.4.286\include\</Value>
+      <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\2.1.506\include\</Value>
       <Value>..</Value>
       <Value>../../WavetableSynthesizer</Value>
     </ListValues>
@@ -173,11 +126,6 @@
   <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
 </AvrGcc>
     </ToolchainSettings>
-    <PreBuildEvent>$(AVRSTUDIO_EXE_PATH)\toolchain\avr8\avr8-gnu-toolchain\avr\bin\objcopy.exe -I binary -O elf32-little C:\Users\yuan\Desktop\music-box-avrdx\music-box-avrdx\score.bin blob.o</PreBuildEvent>
-    <UsesExternalMakeFile>False</UsesExternalMakeFile>
-    <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
-    <BuildTarget>all</BuildTarget>
-    <CleanTarget>clean</CleanTarget>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\WavetableSynthesizer\AlgorithmTest.c">
@@ -227,9 +175,6 @@
     <Compile Include="..\WavetableSynthesizer\WaveTable.h">
       <SubType>compile</SubType>
       <Link>WavetableSynthesizer\WaveTable.h</Link>
-    </Compile>
-    <Compile Include="HardwareInit.c">
-      <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
